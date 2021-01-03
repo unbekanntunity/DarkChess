@@ -13,6 +13,9 @@ public enum TargetType
 
 public class AllSkills : MonoBehaviour
 {
+    [Header("Required")]
+    public GameObject player;
+
     private int targets = 0;
     private TurnSystem turnSystem;
     private DamageHandler damageHandler;
@@ -39,7 +42,12 @@ public class AllSkills : MonoBehaviour
 
         if (turnSystem.GetBattleStatus() != battleStatus && turnSystem.currentTurn != turn && turnSystem.currentTurn == cardSystem.Player.GetComponent<GetStats>())
         {
-            Debug.Log("Its not your turn");
+            if (turnSystem.currentTurn == player.GetComponent<GetStats>())
+            {
+                gridGenerator.DestroyTiles(DestroyOption.selectedTiles, true, true);
+                Debug.Log("Its not the right stage to play a card");
+            }
+
             return false;
         }
         if (user.GetComponent<GetStats>().character.currentMana >= card.manaCost)
@@ -87,7 +95,11 @@ public class AllSkills : MonoBehaviour
 
         if (turnSystem.GetBattleStatus() != battleStatus && turnSystem.currentTurn != turn && turnSystem.currentTurn == cardSystem.Player.GetComponent<GetStats>())
         {
-            Debug.Log("Its not your turn");
+            if (turnSystem.currentTurn == player.GetComponent<GetStats>())
+            {
+                gridGenerator.DestroyTiles(DestroyOption.selectedTiles, true, true);
+                Debug.Log("Its not the right stage to play a card");
+            }
             return false;
         }
 

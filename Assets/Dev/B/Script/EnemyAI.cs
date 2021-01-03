@@ -20,6 +20,7 @@ public class EnemyAI : MonoBehaviour
     private Card usedCard;
     private bool alreadyWent = false;
     private int rotation = 0;
+    private GameObject placeHolder;
 
     private void Awake()
     {
@@ -28,6 +29,8 @@ public class EnemyAI : MonoBehaviour
         turnSystem = FindObjectOfType<TurnSystem>();
         gridGenerator = FindObjectOfType<EditedGridGenerator>();
         getStats = GetComponent<GetStats>();
+
+        placeHolder = new GameObject();
     }
 
     private void Update()

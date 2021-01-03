@@ -64,11 +64,13 @@ public class DragDrop : MonoBehaviour, IPointerDownHandler, IBeginDragHandler, I
             skillInfo.SetCardID(getCardInfo.card);
             getBarInfo.RefreshBar();
             SendMessageUpwards("PlayCard", index);
+            gridGenerator.DestroyTiles(DestroyOption.all, true, true);
         }
         else
         {
             ResetCardPos();
         }
+
     }
 
     public void OnPointerDown(PointerEventData eventData)

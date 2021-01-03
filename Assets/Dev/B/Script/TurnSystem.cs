@@ -33,12 +33,10 @@ public class TurnSystem : MonoBehaviour
 
         index = (int)status;
         getStats = FindObjectsOfType<GetStats>();
-
         foreach (GetStats getStat in getStats)
         {
             getStat.character.relation = getStat.character.startRelation;
         }
-
         SetOrder();
         RefreshOrder();
     }
