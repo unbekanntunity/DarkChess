@@ -21,7 +21,7 @@ public class TurnSystem : MonoBehaviour
     private int currentTurnIndex = 0;
     private int index = 0;
     private int battleStatusLastIndex = Enum.GetNames(typeof(BattleStatus)).Length - 1;
-    public GetStats[] getStats;
+    private GetStats[] getStats;
     private EditedGridGenerator gridGenerator;
     private CardSystem cardSystem;
 
