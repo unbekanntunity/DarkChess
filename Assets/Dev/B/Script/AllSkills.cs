@@ -37,7 +37,7 @@ public class AllSkills : MonoBehaviour
         targets = 0;
         gridGenerator = _gridGenerator;
 
-        if (turnSystem.GetBattleStatus() != battleStatus && turnSystem.currentTurn != turn)
+        if (turnSystem.GetBattleStatus() != battleStatus && turnSystem.currentTurn != turn && turnSystem.currentTurn == cardSystem.Player.GetComponent<GetStats>())
         {
             Debug.Log("Its not your turn");
             return false;
@@ -48,7 +48,7 @@ public class AllSkills : MonoBehaviour
             {
                 foreach (GameObject tile1 in gridGenerator.rangeTiles)
                 {
-                    Debug.Log($"{tile.transform.position.x} == {tile1.transform.position.x} && {tile.transform.position.z} == {tile1.transform.position.z} ");
+                    //Debug.Log($"{tile.transform.position.x} == {tile1.transform.position.x} && {tile.transform.position.z} == {tile1.transform.position.z} ");
                     if (tile.transform.position.x == tile1.transform.position.x && tile.transform.position.z == tile1.transform.position.z)
                     {
                         parametersObjects.Add(user);
@@ -74,7 +74,8 @@ public class AllSkills : MonoBehaviour
         }
         else
         {
-            Debug.Log("You dont have enough mana for this ability");
+            if (turnSystem.currentTurn == cardSystem.Player.GetComponent<GetStats>())
+                Debug.Log("You dont have enough mana for this ability");
             return false;
         }
         return false;
@@ -84,7 +85,7 @@ public class AllSkills : MonoBehaviour
     {
         targets = 0;
 
-        if (turnSystem.GetBattleStatus() != battleStatus && turnSystem.currentTurn != turn)
+        if (turnSystem.GetBattleStatus() != battleStatus && turnSystem.currentTurn != turn && turnSystem.currentTurn == cardSystem.Player.GetComponent<GetStats>())
         {
             Debug.Log("Its not your turn");
             return false;
@@ -122,7 +123,8 @@ public class AllSkills : MonoBehaviour
         }
         else
         {
-            Debug.Log("You dont have enough mana for this ability");
+            if (turnSystem.currentTurn == cardSystem.Player.GetComponent<GetStats>())
+                Debug.Log("You dont have enough mana for this ability");
             return false;
         }
         return false;
@@ -131,19 +133,19 @@ public class AllSkills : MonoBehaviour
 
     public void Strike(List<GameObject> parameters)
     {
-        turnSystem.NextTurn();
         damageHandler.DealDamage(parameters[0].GetComponent<GetStats>().lastcastedSkill.damage, parameters[1].GetComponent<GetObjectonTile>().gameObjectOnTile.GetComponent<GetStats>().character);
         parameters[0].GetComponent<GetStats>().character.currentMana -= parameters[0].GetComponent<GetStats>().lastcastedSkill.manaCost;
         getBarInfo.RefreshBar();
         parametersObjects.Clear();
         gridGenerator.DestroyTiles(DestroyOption.all, true, true);
+        turnSystem.NextTurn();
     }
 
     public void Move(List<GameObject> parameters)
     {
-        turnSystem.NextTurn();
         parameters[0].transform.position = parameters[1].transform.position;
         parametersObjects.Clear();
         gridGenerator.DestroyTiles(DestroyOption.all, true, true);
+        turnSystem.NextTurn();
     }
 }

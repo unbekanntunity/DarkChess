@@ -4271,7 +4271,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   status: 0
-  time: 1
+  currentTurn: {fileID: 0}
+  lastTurn: {fileID: 0}
+  turnOrder: []
+  getStats: []
 --- !u!4 &1725547296
 Transform:
   m_ObjectHideFlags: 0
