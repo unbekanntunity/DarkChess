@@ -13,16 +13,21 @@ public enum TargetType
 
 public class AllSkills : MonoBehaviour
 {
+    [Header("Required")]
+    public GameObject player;
+
     private int targets = 0;
     private TurnSystem turnSystem;
     private DamageHandler damageHandler;
     private EditedGridGenerator gridGenerator;
     private GetBarInfo getBarInfo;
+    private CardSystem cardSystem;
 
     private List<GameObject> parametersObjects = new List<GameObject>();
 
     private void Awake()
     {
+        cardSystem = FindObjectOfType<CardSystem>();
         getBarInfo = FindObjectOfType<GetBarInfo>();
         turnSystem = FindObjectOfType<TurnSystem>();
         damageHandler = FindObjectOfType<DamageHandler>();
@@ -30,14 +35,19 @@ public class AllSkills : MonoBehaviour
     }
 
     #region cast methods
-    public bool cast(Card card, EditedGridGenerator _gridGenerator, GameObject user, BattleStatus battleStatus)
+    public bool cast(Card card, EditedGridGenerator _gridGenerator, GameObject user, BattleStatus battleStatus, GetStats turn)
     {
         targets = 0;
         gridGenerator = _gridGenerator;
 
-        if (turnSystem.GetBattleStatus() != battleStatus)
+        if (turnSystem.GetBattleStatus() != battleStatus && turnSystem.currentTurn != turn && turnSystem.currentTurn == cardSystem.Player.GetComponent<GetStats>())
         {
-            Debug.Log("Its not your turn");
+            if (turnSystem.currentTurn == player.GetComponent<GetStats>())
+            {
+                gridGenerator.DestroyTiles(DestroyOption.selectedTiles, true, true);
+                Debug.Log("Its not the right stage to play a card");
+            }
+
             return false;
         }
         if (user.GetComponent<GetStats>().character.currentMana >= card.manaCost)
@@ -62,26 +72,34 @@ public class AllSkills : MonoBehaviour
             }
             if (targets == 0)
             {
-                Debug.LogError("Select other tiles");
-                if (turnSystem.GetBattleStatus() != BattleStatus.PlayerMove) gridGenerator.DestroyTiles(DestroyOption.all, true, true);
+                if (turnSystem.GetBattleStatus() != BattleStatus.Move && turnSystem.currentTurn == cardSystem.Player.GetComponent<GetStats>())
+                {
+                    Debug.Log("Select valid target");
+                    gridGenerator.DestroyTiles(DestroyOption.all, true, true);
+                }
                 return false;
             }
         }
         else
         {
-            Debug.Log("You dont have enough mana for this ability");
+            if (turnSystem.currentTurn == cardSystem.Player.GetComponent<GetStats>())
+                Debug.Log("You dont have enough mana for this ability");
             return false;
         }
         return false;
     }
 
-    public bool cast(Card card, List<GameObject> selectedTiles, List<GameObject> rangeTiles, GameObject user, BattleStatus battleStatus)
+    public bool cast(Card card, List<GameObject> selectedTiles, List<GameObject> rangeTiles, GameObject user, BattleStatus battleStatus, GetStats turn)
     {
         targets = 0;
 
-        if (turnSystem.GetBattleStatus() != battleStatus)
+        if (turnSystem.GetBattleStatus() != battleStatus && turnSystem.currentTurn != turn && turnSystem.currentTurn == cardSystem.Player.GetComponent<GetStats>())
         {
-            Debug.Log("Its not your turn");
+            if (turnSystem.currentTurn == player.GetComponent<GetStats>())
+            {
+                gridGenerator.DestroyTiles(DestroyOption.selectedTiles, true, true);
+                Debug.Log("Its not the right stage to play a card");
+            }
             return false;
         }
 
@@ -107,14 +125,18 @@ public class AllSkills : MonoBehaviour
             }
             if (targets == 0)
             {
-                Debug.Log("Select valid targets");
-                if (turnSystem.GetBattleStatus() != BattleStatus.PlayerMove) gridGenerator.DestroyTiles(DestroyOption.all, true, true);
+                if (turnSystem.GetBattleStatus() != BattleStatus.Move && turnSystem.currentTurn == cardSystem.Player.GetComponent<GetStats>())
+                {
+                    Debug.Log("Select valid targets");
+                    gridGenerator.DestroyTiles(DestroyOption.all, true, true);
+                }
                 return false;
             }
         }
         else
         {
-            Debug.Log("You dont have enough mana for this ability");
+            if (turnSystem.currentTurn == cardSystem.Player.GetComponent<GetStats>())
+                Debug.Log("You dont have enough mana for this ability");
             return false;
         }
         return false;
@@ -123,19 +145,19 @@ public class AllSkills : MonoBehaviour
 
     public void Strike(List<GameObject> parameters)
     {
-        turnSystem.NextTurn();
         damageHandler.DealDamage(parameters[0].GetComponent<GetStats>().lastcastedSkill.damage, parameters[1].GetComponent<GetObjectonTile>().gameObjectOnTile.GetComponent<GetStats>().character);
         parameters[0].GetComponent<GetStats>().character.currentMana -= parameters[0].GetComponent<GetStats>().lastcastedSkill.manaCost;
         getBarInfo.RefreshBar();
         parametersObjects.Clear();
         gridGenerator.DestroyTiles(DestroyOption.all, true, true);
+        turnSystem.NextTurn();
     }
 
     public void Move(List<GameObject> parameters)
     {
-        turnSystem.NextTurn();
         parameters[0].transform.position = parameters[1].transform.position;
         parametersObjects.Clear();
         gridGenerator.DestroyTiles(DestroyOption.all, true, true);
+        turnSystem.NextTurn();
     }
 }

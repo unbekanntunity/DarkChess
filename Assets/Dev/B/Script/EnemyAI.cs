@@ -12,6 +12,7 @@ public class EnemyAI : MonoBehaviour
     public float smallestDistance;
     public float largestDistance;
 
+    private GameObject placeHolder;
     private TurnSystem turnSystem;
     private GetStats getStats;
     private EditedGridGenerator gridGenerator;
@@ -22,6 +23,7 @@ public class EnemyAI : MonoBehaviour
 
     private void Awake()
     {
+        placeHolder = new GameObject();
         allSkills = FindObjectOfType<AllSkills>();
         turnSystem = FindObjectOfType<TurnSystem>();
         gridGenerator = FindObjectOfType<EditedGridGenerator>();
@@ -30,13 +32,13 @@ public class EnemyAI : MonoBehaviour
 
     private void Update()
     {
-        if (turnSystem.GetBattleStatus() == BattleStatus.EnemyMove && !alreadyWent)
+        if (turnSystem.GetBattleStatus() == BattleStatus.Move && !alreadyWent && turnSystem.currentTurn == getStats)
         {
             usedCard = PickRndCard(getStats.normalskills);
             ClearLists();
             EnemyMove();
         }
-        else if (turnSystem.GetBattleStatus() == BattleStatus.EnemyCombat && !alreadyWent)
+        else if (turnSystem.GetBattleStatus() == BattleStatus.Combat && !alreadyWent && turnSystem.currentTurn == getStats)
         {
             ClearLists();
             EnemyCombat();
@@ -45,7 +47,6 @@ public class EnemyAI : MonoBehaviour
 
     private void EnemyMove()
     {
-        GameObject placeHolder = new GameObject();
         alreadyWent = true;
 
         int rotation = (360 - (360 - (int)this.transform.localEulerAngles.y)) / 90;
@@ -130,7 +131,7 @@ public class EnemyAI : MonoBehaviour
 
             gridGenerator.selectedTiles.Add(tempList2[indexTempList2]);
             gridGenerator.GenerateSkillTiles(getStats.character.movementCard.ranges, getStats.character.movementCard.targetType, gameObject, TypesofValue.relative, false);
-            if (allSkills.cast(getStats.character.movementCard, gridGenerator, gameObject, BattleStatus.EnemyMove))
+            if (allSkills.cast(getStats.character.movementCard, gridGenerator, gameObject, BattleStatus.Move, getStats))
             {
                 alreadyWent = false;
                 break;
@@ -157,7 +158,7 @@ public class EnemyAI : MonoBehaviour
                     }
                 }
             }
-            if (allSkills.cast(usedCard, gridGenerator, gameObject, BattleStatus.EnemyCombat))
+            if (allSkills.cast(usedCard, gridGenerator, gameObject, BattleStatus.Combat, getStats))
             {
                 alreadyWent = false;
                 return;
