@@ -16,9 +16,9 @@ MonoBehaviour:
   Model: {fileID: 5403002427580834744, guid: 8361691f425fb7f44a02419bf45f5154, type: 3}
   charName: Pawn
   health: 200
-  currentHealth: 200
+  currentHealth: 136
   mana: 1000
-  currentMana: 780
+  currentMana: 758
   strength: 50
   defense: 12
   movement: 331

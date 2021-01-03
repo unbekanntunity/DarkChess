@@ -30,6 +30,7 @@ public class Character : ScriptableObject, IDamageable<int>
     public int dodgeRate;
 
     public HealthRepresentation healthRepresentation;
+    public RelationType startRelation;
     public RelationType relation;
 
     public Card movementCard;

@@ -18,11 +18,13 @@ public class AllSkills : MonoBehaviour
     private DamageHandler damageHandler;
     private EditedGridGenerator gridGenerator;
     private GetBarInfo getBarInfo;
+    private CardSystem cardSystem;
 
     private List<GameObject> parametersObjects = new List<GameObject>();
 
     private void Awake()
     {
+        cardSystem = FindObjectOfType<CardSystem>();
         getBarInfo = FindObjectOfType<GetBarInfo>();
         turnSystem = FindObjectOfType<TurnSystem>();
         damageHandler = FindObjectOfType<DamageHandler>();
@@ -30,12 +32,12 @@ public class AllSkills : MonoBehaviour
     }
 
     #region cast methods
-    public bool cast(Card card, EditedGridGenerator _gridGenerator, GameObject user, BattleStatus battleStatus)
+    public bool cast(Card card, EditedGridGenerator _gridGenerator, GameObject user, BattleStatus battleStatus, GetStats turn)
     {
         targets = 0;
         gridGenerator = _gridGenerator;
 
-        if (turnSystem.GetBattleStatus() != battleStatus)
+        if (turnSystem.GetBattleStatus() != battleStatus && turnSystem.currentTurn != turn)
         {
             Debug.Log("Its not your turn");
             return false;
@@ -62,8 +64,11 @@ public class AllSkills : MonoBehaviour
             }
             if (targets == 0)
             {
-                Debug.LogError("Select other tiles");
-                if (turnSystem.GetBattleStatus() != BattleStatus.PlayerMove) gridGenerator.DestroyTiles(DestroyOption.all, true, true);
+                if (turnSystem.GetBattleStatus() != BattleStatus.Move && turnSystem.currentTurn == cardSystem.Player.GetComponent<GetStats>())
+                {
+                    Debug.Log("Select valid target");
+                    gridGenerator.DestroyTiles(DestroyOption.all, true, true);
+                }
                 return false;
             }
         }
@@ -75,11 +80,11 @@ public class AllSkills : MonoBehaviour
         return false;
     }
 
-    public bool cast(Card card, List<GameObject> selectedTiles, List<GameObject> rangeTiles, GameObject user, BattleStatus battleStatus)
+    public bool cast(Card card, List<GameObject> selectedTiles, List<GameObject> rangeTiles, GameObject user, BattleStatus battleStatus, GetStats turn)
     {
         targets = 0;
 
-        if (turnSystem.GetBattleStatus() != battleStatus)
+        if (turnSystem.GetBattleStatus() != battleStatus && turnSystem.currentTurn != turn)
         {
             Debug.Log("Its not your turn");
             return false;
@@ -107,8 +112,11 @@ public class AllSkills : MonoBehaviour
             }
             if (targets == 0)
             {
-                Debug.Log("Select valid targets");
-                if (turnSystem.GetBattleStatus() != BattleStatus.PlayerMove) gridGenerator.DestroyTiles(DestroyOption.all, true, true);
+                if (turnSystem.GetBattleStatus() != BattleStatus.Move && turnSystem.currentTurn == cardSystem.Player.GetComponent<GetStats>())
+                {
+                    Debug.Log("Select valid targets");
+                    gridGenerator.DestroyTiles(DestroyOption.all, true, true);
+                }
                 return false;
             }
         }
