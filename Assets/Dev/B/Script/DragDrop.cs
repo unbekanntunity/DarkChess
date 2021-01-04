@@ -61,10 +61,9 @@ public class DragDrop : MonoBehaviour, IPointerDownHandler, IBeginDragHandler, I
         successful = allSkills.cast(getCardInfo.card, gridGenerator, cardSystem.Player, BattleStatus.Combat, cardSystem.Player.GetComponent<GetStats>()) && this.transform.position.y >= heightUI;
         if (successful)
         {
-            skillInfo.SetCardID(getCardInfo.card);
             getBarInfo.RefreshBar();
             SendMessageUpwards("PlayCard", index);
-            gridGenerator.DestroyTiles(DestroyOption.all, true, true);
+            gridGenerator.DestroyTiles(DestroyOption.allList, true, true);
         }
         else
         {
@@ -100,7 +99,7 @@ public class DragDrop : MonoBehaviour, IPointerDownHandler, IBeginDragHandler, I
     {
         this.transform.position = lastPos;
         if(turnSystem.GetBattleStatus() == BattleStatus.Combat && turnSystem.currentTurn == cardSystem.Player.GetComponent<GetStats>())
-            gridGenerator.DestroyTiles(DestroyOption.all, true, true);
+            gridGenerator.DestroyTiles(DestroyOption.allList, true, true);
         isSelected = false;
     }
 

@@ -10,20 +10,20 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b0339c0ee922dd941bf2c6c34754a865, type: 3}
-  m_Name: Xny
+  m_Name: Golem
   m_EditorClassIdentifier: 
   picture: {fileID: 21300000, guid: 5bf33171a7890405fadd9ba6c341d086, type: 3}
   Model: {fileID: 5403002427580834744, guid: 8361691f425fb7f44a02419bf45f5154, type: 3}
-  charName: Xny
+  charName: Golem
   health: 100
-  currentHealth: 10
+  currentHealth: 50
   mana: 100
-  currentMana: 56
+  currentMana: 6
   strength: 0
   defense: 0
   movement: 0
   critRate: 0
   dodgeRate: 0
-  healthRepresentation: 0
-  relation: 1
+  healthRepresentation: 1
+  relation: 0
   movementCard: {fileID: 11400000, guid: 66952b6fa6dd5c643ac75f68fd0077d2, type: 2}

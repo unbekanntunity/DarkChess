@@ -3,7 +3,7 @@ using UnityEngine;
 
 public enum Skills
 {
-    Strike, Move
+    Strike, Move, BloodySlice
 }
 
 public enum TargetType
@@ -21,12 +21,14 @@ public class AllSkills : MonoBehaviour
     private DamageHandler damageHandler;
     private EditedGridGenerator gridGenerator;
     private GetBarInfo getBarInfo;
+    private SkillInfo skillInfo;
     private CardSystem cardSystem;
 
     private List<GameObject> parametersObjects = new List<GameObject>();
 
     private void Awake()
     {
+        skillInfo = FindObjectOfType<SkillInfo>();
         cardSystem = FindObjectOfType<CardSystem>();
         getBarInfo = FindObjectOfType<GetBarInfo>();
         turnSystem = FindObjectOfType<TurnSystem>();
@@ -61,6 +63,7 @@ public class AllSkills : MonoBehaviour
                     {
                         parametersObjects.Add(user);
                         parametersObjects.Add(tile);
+                        skillInfo.SetCardID(card);
                         user.GetComponent<GetStats>().lastcastedSkill = card;
                         this.SendMessage(card.skill.ToString(), parametersObjects);
                         targets++;
@@ -74,7 +77,7 @@ public class AllSkills : MonoBehaviour
             {
                 if (turnSystem.GetBattleStatus() != BattleStatus.Move && turnSystem.currentTurn == cardSystem.Player.GetComponent<GetStats>())
                 {
-                    Debug.Log("Select valid target");
+                    Debug.Log("Select valid targets");
                     gridGenerator.DestroyTiles(DestroyOption.all, true, true);
                 }
                 return false;
@@ -114,6 +117,7 @@ public class AllSkills : MonoBehaviour
                     {
                         parametersObjects.Add(user);
                         parametersObjects.Add(tile);
+                        skillInfo.SetCardID(card);
                         user.GetComponent<GetStats>().lastcastedSkill = card;
                         this.SendMessage(card.skill.ToString(), parametersObjects);
                         targets++;
@@ -149,7 +153,16 @@ public class AllSkills : MonoBehaviour
         parameters[0].GetComponent<GetStats>().character.currentMana -= parameters[0].GetComponent<GetStats>().lastcastedSkill.manaCost;
         getBarInfo.RefreshBar();
         parametersObjects.Clear();
-        gridGenerator.DestroyTiles(DestroyOption.all, true, true);
+        turnSystem.NextTurn();
+    }
+
+    public void BloodySlice(List<GameObject> parameters)
+    {
+        damageHandler.DealDamage(parameters[0].GetComponent<GetStats>().lastcastedSkill.damage, parameters[1].GetComponent<GetObjectonTile>().gameObjectOnTile.GetComponent<GetStats>().character);
+        parameters[0].GetComponent<GetStats>().character.currentMana -= parameters[0].GetComponent<GetStats>().lastcastedSkill.manaCost;
+        parameters[0].GetComponent<GetStats>().character.currentHealth += parameters[0].GetComponent<GetStats>().lastcastedSkill.damage;
+        getBarInfo.RefreshBar();
+        parametersObjects.Clear();
         turnSystem.NextTurn();
     }
 
@@ -157,7 +170,6 @@ public class AllSkills : MonoBehaviour
     {
         parameters[0].transform.position = parameters[1].transform.position;
         parametersObjects.Clear();
-        gridGenerator.DestroyTiles(DestroyOption.all, true, true);
         turnSystem.NextTurn();
     }
 }

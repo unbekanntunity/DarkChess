@@ -87,7 +87,6 @@ public class EditedMovement : MonoBehaviour
                 if (allSkills.cast(getStats.character.movementCard, currentSelectedTiles, gridGenerator.rangeTiles, this.gameObject, BattleStatus.Move, getStats))
                 {
                     getStats.lastcastedSkill = getStats.character.movementCard;
-                    gridGenerator.DestroyTiles(DestroyOption.all, true, true);
                     tracked = false;
                 }
             }

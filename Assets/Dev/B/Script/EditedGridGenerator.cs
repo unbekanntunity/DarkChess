@@ -14,7 +14,7 @@ public enum TypesofValue
 
 public enum DestroyOption
 {
-    all, selectedTiles, rangeTiles
+    all, selectedTiles, rangeTiles, allList
 }
 
 public class EditedGridGenerator : MonoBehaviour
@@ -39,6 +39,7 @@ public class EditedGridGenerator : MonoBehaviour
     public List<GameObject> selectedTiles = new List<GameObject>();
     public List<GameObject> rangeTiles = new List<GameObject>();
 
+    private List<GameObject> allTiles = new List<GameObject>();
     private List<GameObject> invisGridTiles = new List<GameObject>();    
     private GameObject tilePrefabclone;
     private float gridstartX;
@@ -171,6 +172,7 @@ public class EditedGridGenerator : MonoBehaviour
                         tile.GetComponent<MeshRenderer>().enabled = false;
 
                     rangeTiles.Add(tile);
+                    allTiles.Add(tile);
                     CheckTargetType(targetType);
                 }
                 else
@@ -235,6 +237,8 @@ public class EditedGridGenerator : MonoBehaviour
 
     public void DestroyTiles(DestroyOption destroyOption, bool clearList, bool destroyTiles)
     {
+        ;
+
         if (destroyOption != DestroyOption.selectedTiles)
         {
             if(destroyTiles)
@@ -255,6 +259,11 @@ public class EditedGridGenerator : MonoBehaviour
             if(clearList)
                 selectedTiles.Clear();
         }
+        if(destroyOption == DestroyOption.all)
+            foreach(GameObject tile in allTiles)
+            {
+                Destroy(tile);
+            }
     }
 
     IEnumerator WaitUntilDestroy(GameObject gameObject, bool _destroy, float _timeBeforeDestroy)

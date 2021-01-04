@@ -19,7 +19,9 @@ public class EnemyAI : MonoBehaviour
     private AllSkills allSkills;
     private Card usedCard;
     private bool alreadyWent = false;
+    public bool foundCard = false;
     private int rotation = 0;
+    private List<Card> possibleCards = new List<Card>();
 
     private void Awake()
     {
@@ -28,14 +30,25 @@ public class EnemyAI : MonoBehaviour
         turnSystem = FindObjectOfType<TurnSystem>();
         gridGenerator = FindObjectOfType<EditedGridGenerator>();
         getStats = GetComponent<GetStats>();
+
     }
 
     private void Update()
     {
         if (turnSystem.GetBattleStatus() == BattleStatus.Move && !alreadyWent && turnSystem.currentTurn == getStats)
         {
-            usedCard = PickRndCard(getStats.normalskills);
+            foundCard = false;
             ClearLists();
+            possibleCards.AddRange(getStats.normalskills);
+            while(!foundCard)
+            {
+                usedCard = PickRndCard(possibleCards.ToArray());
+                possibleCards.Remove(usedCard);
+                if(getStats.character.currentMana >= usedCard.manaCost)
+                {
+                    foundCard = true;
+                }
+            }
             EnemyMove();
         }
         else if (turnSystem.GetBattleStatus() == BattleStatus.Combat && !alreadyWent && turnSystem.currentTurn == getStats)
@@ -123,7 +136,7 @@ public class EnemyAI : MonoBehaviour
         }
 
         RemoveDuplictas(tempList2);
-        gridGenerator.DestroyTiles(DestroyOption.all, true, false);
+        gridGenerator.DestroyTiles(DestroyOption.allList, true, false);
 
         for (int i = 0; i < 4; i++)
         {
@@ -224,6 +237,7 @@ public class EnemyAI : MonoBehaviour
         tempList.Clear();
         tempList2.Clear();
         playerPos.Clear();
+        possibleCards.Clear();
     }
 }
 
