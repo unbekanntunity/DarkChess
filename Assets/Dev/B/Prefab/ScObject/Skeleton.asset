@@ -16,9 +16,9 @@ MonoBehaviour:
   Model: {fileID: 5403002427580834744, guid: 8361691f425fb7f44a02419bf45f5154, type: 3}
   charName: Skeleton
   health: 100
-  currentHealth: 10
+  currentHealth: 190
   mana: 1000
-  currentMana: 516
+  currentMana: 486
   strength: 0
   defense: 22
   movement: 11

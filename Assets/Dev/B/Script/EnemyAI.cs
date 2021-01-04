@@ -40,16 +40,17 @@ public class EnemyAI : MonoBehaviour
             foundCard = false;
             ClearLists();
             possibleCards.AddRange(getStats.normalskills);
-            while(!foundCard)
+            do
             {
                 usedCard = PickRndCard(possibleCards.ToArray());
                 possibleCards.Remove(usedCard);
-                if(getStats.character.currentMana >= usedCard.manaCost)
+                if (getStats.character.currentMana >= usedCard.manaCost)
                 {
                     foundCard = true;
                 }
-            }
-            EnemyMove();
+            } while (!foundCard);
+
+             EnemyMove();
         }
         else if (turnSystem.GetBattleStatus() == BattleStatus.Combat && !alreadyWent && turnSystem.currentTurn == getStats)
         {

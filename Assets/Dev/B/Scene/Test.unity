@@ -2761,7 +2761,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: bac20520681b8df419ed953f80afdf6c, type: 2}
   - {fileID: 11400000, guid: decf7228b915b6a419fb4b7538955e41, type: 2}
   uniqueSkills: []
-  collidersize: {x: 0.5, y: 1, z: 0.5}
+  collidersize: {x: 3.5, y: 0.25, z: 2.13}
   health: 0
   charInfo: {fileID: 0}
   lastcastedSkill: {fileID: 0}
@@ -6965,8 +6965,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.07, y: -0.33, z: 0.06}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 0.04, y: 0.001, z: 0.06}
+  m_Center: {x: 0, y: 0.02, z: 0}
 --- !u!4 &8212508445655065872
 Transform:
   m_ObjectHideFlags: 0
@@ -7919,7 +7919,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: bac20520681b8df419ed953f80afdf6c, type: 2}
   - {fileID: 11400000, guid: decf7228b915b6a419fb4b7538955e41, type: 2}
   uniqueSkills: []
-  collidersize: {x: 0.5, y: 1, z: 0.5}
+  collidersize: {x: 0.04, y: 0.01, z: 0.06}
   health: 0
   charInfo: {fileID: 0}
   lastcastedSkill: {fileID: 0}
@@ -8633,8 +8633,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 2.71, y: 6.23, z: 1.82}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 3.5, y: 0.25, z: 2.13}
+  m_Center: {x: 0, y: 0.2, z: 0}
 --- !u!1 &8956553820153733515
 GameObject:
   m_ObjectHideFlags: 0

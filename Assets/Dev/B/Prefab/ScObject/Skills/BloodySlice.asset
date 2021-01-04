@@ -18,7 +18,7 @@ MonoBehaviour:
   skillPic: {fileID: 21300000, guid: ed72f49bf7af8450ea16c4af1a47f9fe, type: 3}
   template: {fileID: 5576492727370957885, guid: 7fa7f21dd5fd4554696d1f17a3b71f5a,
     type: 3}
-  skill: 0
+  skill: 2
   maxAmountOfTargets: 1
   targetType: 1
   ranges:
