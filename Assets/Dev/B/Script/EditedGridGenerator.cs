@@ -127,7 +127,8 @@ public class EditedGridGenerator : MonoBehaviour
                 var newRealtiveposition = realtiveposition;
                 valid = false;
 
-                if (user.transform.localEulerAngles == Vector3.zero && typesofValue == TypesofValue.relative)
+                print(user.transform.localEulerAngles);
+                if ((user.transform.localEulerAngles == Vector3.zero || user.transform.localEulerAngles == new Vector3(0,360,0)) && typesofValue == TypesofValue.relative)
                 {
                     //Up
                     if (realtiveposition.z > 0) newRealtiveposition = new Vector3(-realtiveposition.x, realtiveposition.y, realtiveposition.z);

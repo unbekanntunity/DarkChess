@@ -168,7 +168,46 @@ public class AllSkills : MonoBehaviour
 
     public void Move(List<GameObject> parameters)
     {
-        parameters[0].transform.position = parameters[1].transform.position;
+        if (parameters[0].transform.localEulerAngles.y % 180 == 0)
+        {
+            parameters[0].transform.position = Vector3.MoveTowards(new Vector3(parameters[0].transform.position.x, 0, parameters[1].transform.position.z), new Vector3(parameters[0].transform.position.x, 0, parameters[1].transform.position.z), 1000);
+            if (parameters[0].transform.localEulerAngles == new Vector3(0, 180, 0))
+            {
+                if (parameters[0].transform.position.x > parameters[1].transform.position.x)
+                    parameters[0].transform.localEulerAngles += new Vector3(0, 90, 0);
+                else if (parameters[0].transform.position.x < parameters[1].transform.position.x)
+                    parameters[0].transform.localEulerAngles -= new Vector3(0, 90, 0);
+            }
+            else
+            {
+                if (parameters[0].transform.position.x > parameters[1].transform.position.x)
+                    parameters[0].transform.localEulerAngles -= new Vector3(0, 90, 0);
+                else if (parameters[0].transform.position.x < parameters[1].transform.position.x)
+                    parameters[0].transform.localEulerAngles += new Vector3(0, 90, 0);
+            }
+            parameters[0].transform.position = Vector3.MoveTowards(new Vector3(parameters[0].transform.position.x, 0, parameters[0].transform.position.z), new Vector3(parameters[1].transform.position.x, 0, parameters[0].transform.position.z), 1000);
+        }
+        else
+        {
+            parameters[0].transform.position = Vector3.MoveTowards(new Vector3(parameters[0].transform.position.x, 0, parameters[0].transform.position.z), new Vector3(parameters[1].transform.position.x, 0, parameters[0].transform.position.z), 1000);
+            if (parameters[0].transform.localEulerAngles == new Vector3(0, 270, 0))
+            {
+                if (parameters[0].transform.position.z < parameters[1].transform.position.z)
+                    parameters[0].transform.localEulerAngles += new Vector3(0, 90, 0);
+                else if (parameters[0].transform.position.z > parameters[1].transform.position.z)
+                    parameters[0].transform.localEulerAngles -= new Vector3(0, 90, 0);
+            }
+            else
+            {
+                if (parameters[0].transform.position.z < parameters[1].transform.position.z)
+                    parameters[0].transform.localEulerAngles -= new Vector3(0, 90, 0);
+                else if (parameters[0].transform.position.z > parameters[1].transform.position.z)
+                    parameters[0].transform.localEulerAngles += new Vector3(0, 90, 0);
+            }
+            parameters[0].transform.position = Vector3.MoveTowards(new Vector3(parameters[0].transform.position.x, 0, parameters[1].transform.position.z), new Vector3(parameters[0].transform.position.x, 0, parameters[1].transform.position.z), 1000);
+        }
+        parameters[0].transform.localEulerAngles = new Vector3(Mathf.Round(parameters[0].transform.localEulerAngles.x), Mathf.Round(parameters[0].transform.localEulerAngles.y), Mathf.Round(parameters[0].transform.localEulerAngles.z));
+        //parameters[0].transform.position = parameters[1].transform.position;
         parametersObjects.Clear();
         turnSystem.NextTurn();
     }

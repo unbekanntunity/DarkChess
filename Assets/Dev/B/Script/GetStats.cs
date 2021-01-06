@@ -13,14 +13,12 @@ public class GetStats : MonoBehaviour
 
 
     [Header("Optional")]
-    public Vector3 collidersize = new Vector3(1, 1, 1);
     public bool health = false;
 
     [Header("Assigned Automatically")]
     public CharInfo charInfo;
     public Card lastcastedSkill;
 
-    private BoxCollider boxCollider;
     private Slider healthbar;
 
     private void Awake()
@@ -38,9 +36,6 @@ public class GetStats : MonoBehaviour
         }
 
         charInfo = FindObjectOfType<CharInfo>();
-
-        boxCollider = GetComponent<BoxCollider>();
-        boxCollider.size = collidersize;
 
         if (!haveBody)
         {
