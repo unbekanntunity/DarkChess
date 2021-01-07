@@ -1,27 +1,29 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class TestScript : MonoBehaviour
 {
-    public delegate void aa(int num);
-    public aa a;
 
-    public void Ak(int num)
+    public float speed;
+
+    private Rigidbody rig;
+
+    private void Start()
     {
-        Debug.Log($" Ak trigger: {num}");
+
+        rig = GetComponent<Rigidbody>();
     }
 
-    public void As(int num)
+    void FixedUpdate()
     {
-        Debug.Log($" As trigger: {num}");
-    }
 
-    public void chnage()
-    {
-        if (a == Ak)
-            a = As;
-        else
-            a = Ak;
-        a(10);
+        float t_hmove = Input.GetAxis("Horizontal");
+        float t_vmove = Input.GetAxis("Vertical");
+
+        Vector3 t_direction = new Vector3(t_hmove, 0, t_vmove);
+        t_direction.Normalize();
+
+        rig.velocity = transform.TransformDirection(t_direction) * speed * Time.deltaTime;
     }
 }
+
+
